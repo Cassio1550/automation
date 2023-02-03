@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: "automationteste-0c08"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: "automationteste-0c08"
+  template:
+    metadata:
+      labels:
+        app: "automationteste-0c08"
+    spec:
+      containers:
+        - name: "automationteste-0c08"
+          image: "kubertech.azurecr.io/automationteste"
+          ports:
+          - containerPort: 80

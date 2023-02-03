@@ -1,0 +1,17 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+    name: "automationteste-af69"
+    labels:
+        app: "automationteste-af69"
+    annotations:
+        kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+    rules:
+        - host: automation-teste8a65-automationteste-af69.2b2df8ed38f84dcca83e.brazilsouth.aksapp.io
+          http:
+            paths:
+            - path: /
+              backend:
+                serviceName: "automationteste-af69"
+                servicePort: 80

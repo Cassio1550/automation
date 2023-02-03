@@ -1,0 +1,3 @@
+<app-simple-text-custom-field-value *ngIf="customFieldType=='simple-text'" [name]="name" [value]="value" required="{{required}}" (valueChange)="writeValue($event)"></app-simple-text-custom-field-value>
+<app-long-text-custom-field-value *ngIf="customFieldType=='long-text'" [name]="name" [value]="value" required="{{required}}" (valueChange)="writeValue($event)"></app-long-text-custom-field-value>
+

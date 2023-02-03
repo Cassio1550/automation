@@ -1,0 +1,38 @@
+<div class="row">
+    <div class="col-md-12 d-flex flex-row-reverse my-2">
+            <button class="btn btn-custom mx-1" [routerLink]="['/devicetype', 0]">Novo</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 table-responsive">
+        <table class="table table-striped">
+            <caption>Tipos de Dispositivo</caption>
+            <thead>
+                <tr class="d-flex">
+                    <th scope="col" class="col-1">#</th>
+                    <th scope="col" class="col-8">Nome</th>
+                    <th scope="col" class="col-1">Nome Curto</th>
+                    <th scope="col" class="col-1">Tipo de conexão</th>
+                    <th scope="col" class="col-1">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let deviceType of deviceTypes" class="d-flex">
+                    <th scope="row" class="col-1">{{deviceType.id}}</th>
+                    <td class="col-8">{{deviceType.name}}</td>
+                    <td class="col-1">{{deviceType.mnemonic}}</td>
+                    <td class="col-1">{{deviceType.interfaceType}}</td>
+                    <td class="col-1 p-2">
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Editar">
+                            <button class="btn btn-sm btn-custom mx-1" [routerLink]="['/devicetype', deviceType.id]"><i class="fas fa-edit"></i></button>
+                        </span>
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Apagar">
+                            <button class="btn btn-sm btn-danger mx-1" (click)="delete(deviceType.id)"><i class="fas fa-trash"></i></button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

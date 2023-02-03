@@ -1,0 +1,9 @@
+@import "node_modules/bootstrap/scss/bootstrap";
+
+$custom-color: #261D77;
+
+$theme-colors: (
+  "custom": $custom-color
+);
+
+@import "bootstrap";

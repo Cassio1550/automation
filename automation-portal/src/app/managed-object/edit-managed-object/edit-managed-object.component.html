@@ -1,0 +1,32 @@
+<form #myForm="ngForm" class="m-5">
+    <div class="container" *ngIf="managedObject">
+        <div class="form-group">
+            <label class="small" for="id">Id</label>
+            <input class="form-control" id="id" type="text" readonly [(ngModel)]="managedObject.id" name="id">
+        </div>
+        <div class="form-group">
+            <label for="name" class="small">Nome <span class="text-danger">*</span></label>
+            <input id="name" class="form-control" type="text" placeholder="Nome" [(ngModel)]="managedObject.name" name="name"
+                required #name="ngModel">
+            <small class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched) && name.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label class="small" for="customer">Cliente <span class="text-danger">*</span></label>
+            <select class="form-control" id="customer" name="customer" [(ngModel)]="managedObject.customerId" required
+                #customer="ngModel">
+                <option></option>
+                <option *ngFor="let c of customers" [ngValue]="c.id">{{c.name}}</option>
+            </select>
+            <small class="text-danger"
+                *ngIf="customer.invalid && (customer.dirty || customer.touched) && customer.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="row d-flex flex-row-reverse">
+            <button class="btn btn-custom m-1" (click)="save($event)" [disabled]="myForm.invalid" *ngIf="authorizationService.isUser()">Ok</button>
+            <button class="btn btn-custom m-1" (click)="goBack($event)">Voltar</button>
+        </div>
+    </div>
+</form>

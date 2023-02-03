@@ -1,0 +1,78 @@
+<form #myForm="ngForm" class="m-5">
+    <div class="container" *ngIf="device">
+        <div class="form-group">
+            <label class="small" for="id">Id</label>
+            <input class="form-control" id="id" type="text" readonly [(ngModel)]="device.id" name="id">
+        </div>
+        <div class="form-group">
+            <label class="small" for="id">Id - Monitoração</label>
+            <input class="form-control" id="id" type="text" readonly [(ngModel)]="device.monitoringId"
+                name="monitoringId">
+        </div>
+        <div class="form-group">
+            <label for="name" class="small">Nome <span class="text-danger">*</span></label>
+            <input id="name" class="form-control" type="text" placeholder="Nome" [(ngModel)]="device.name" name="name"
+                required #name="ngModel">
+            <small class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched) && name.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label for="address" class="small">Entereço (IP/DNS) <span class="text-danger">*</span></label>
+            <input id="address" class="form-control" type="text" placeholder="Entereço (IP/DNS)"
+                [(ngModel)]="device.address" name="address" required #address="ngModel">
+            <small class="text-danger"
+                *ngIf="address.invalid && (address.dirty || address.touched) && address.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label class="small" for="deviceType">Tipo <span class="text-danger">*</span></label>
+            <select class="form-control" id="deviceType" name="deviceType" [(ngModel)]="device.deviceTypeId" required [disabled]="device.id > 0"
+                #deviceType="ngModel">
+                <option></option>
+                <option *ngFor="let deviceType of deviceTypes" [ngValue]="deviceType.id">{{deviceType.name}}</option>
+            </select>
+            <small class="text-danger"
+                *ngIf="deviceType.invalid && (deviceType.dirty || deviceType.touched) && deviceType.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label class="small" for="customer">Cliente <span class="text-danger">*</span></label>
+            <select class="form-control" id="customer" name="customer" [(ngModel)]="this.device.site.customerId" required #customer="ngModel" (change)="onCustomerChange($event, this.device.site.customerId)">
+                <option></option>
+                <option *ngFor="let c of customers" [ngValue]="c.id">{{c.name}}</option>
+            </select>
+            <small class="text-danger"
+                *ngIf="customer.invalid && (customer.dirty || customer.touched) && customer.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label class="small" for="site">Localidade <span class="text-danger">*</span></label>
+            <select class="form-control" id="site" name="site" [(ngModel)]="device.siteId" required #site="ngModel" [disabled]="this.device.site.customerId <= 0">
+                <option></option>
+                <option *ngFor="let s of sites" [ngValue]="s.id">{{s.name}}</option>
+            </select>
+            <small class="text-danger"
+                *ngIf="site.invalid && (site.dirty || site.touched) && site.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-check">
+            <input id="enabled" type="checkbox" class="form-check-input" [(ngModel)]="device.enabled" name="enabled">
+            <label for="enabled" class="form-check-label">Habilitado</label>
+        </div>
+
+        <app-custom-field-value *ngFor="let customfield of customFields" [customFieldType]="customfield.customFieldType"
+            [template]="customfield.template" [mandatory]="customfield.mandatory" [name]="customfield.name"
+            [mandatory]="customfield.mandatory" [(ngModel)]="customFieldValues[customfield.id].value"
+            required="{{customfield.mandatory}}"></app-custom-field-value>
+
+        <div class="row d-flex flex-row-reverse">
+            <button class="btn btn-custom m-1" (click)="save($event)" [disabled]="myForm.invalid" *ngIf="authorizationService.isUser()">Ok</button>
+            <button class="btn btn-custom m-1" (click)="goBack($event)">Voltar</button>
+        </div>
+    </div>
+</form>

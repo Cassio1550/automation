@@ -1,0 +1,76 @@
+image: docker:git
+
+variables:
+  TAG: "v.1.${CI_JOB_ID}"
+
+build-api:
+  stage: build
+  services:
+    - name: docker:dind
+      alias: docker
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build api -t automation-portal-api
+    - docker tag automation-portal-api "${CI_REGISTRY}/automation-portal-api:latest"
+    - docker push "${CI_REGISTRY}/automation-portal-api:latest"
+    - docker tag automation-portal-api "${CI_REGISTRY}/automation-portal-api:${TAG}"
+    - docker push "${CI_REGISTRY}/automation-portal-api:${TAG}"
+  only:
+    - master
+
+build-frontend:
+  stage: build
+  services:
+    - name: docker:dind
+      alias: docker
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build automation-portal -t automation-portal-frontend
+    - docker tag automation-portal-frontend "${CI_REGISTRY}/automation-portal-frontend:latest"
+    - docker push "${CI_REGISTRY}/automation-portal-frontend:latest"
+    - docker tag automation-portal-frontend "${CI_REGISTRY}/automation-portal-frontend:${TAG}"
+    - docker push "${CI_REGISTRY}/automation-portal-frontend:${TAG}"
+  only:
+     - master
+
+tag:
+  stage: .post
+  before_script:
+    - git remote set-url origin https://$GIT_CI_USER:$GIT_CI_PASS@gitlab.com/$CI_PROJECT_PATH.git
+    - git config --global user.name "${GITLAB_USER_NAME}"
+    - git config --global user.email "${GITLAB_USER_EMAIL}"
+  script:
+    - git tag -a $TAG -m "Version created by gitlab-ci Build"
+    - git push --tags
+  only:
+    - master
+
+build-api-develop:
+  stage: build
+  services:
+    - name: docker:dind
+      alias: docker
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build api -t automation-portal-api
+    - docker tag automation-portal-api "${CI_REGISTRY}/automation-portal-api:develop"
+    - docker push "${CI_REGISTRY}/automation-portal-api:develop"
+  only:
+    - develop
+
+build-frontend-develop:
+  stage: build
+  services:
+    - name: docker:dind
+      alias: docker
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    - docker build automation-portal -t automation-portal-frontend
+    - docker tag automation-portal-frontend "${CI_REGISTRY}/automation-portal-frontend:develop"
+    - docker push "${CI_REGISTRY}/automation-portal-frontend:develop"
+  only:
+     - develop

@@ -1,0 +1,34 @@
+<form #myForm="ngForm" class="m-5">
+    <div class="container" *ngIf="rule">
+        <div class="form-group">
+            <label class="small" for="id">Id</label>
+            <input class="form-control" id="id" type="text" readonly [(ngModel)]="rule.id" name="id">
+        </div>
+        <div class="form-group">
+            <label for="name" class="small">Nome <span class="text-danger">*</span></label>
+            <input id="name" class="form-control" type="text" placeholder="Nome" [(ngModel)]="rule.name" name="name"
+                required #name="ngModel">
+            <small class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched) && name.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label for="siemName" class="small">Nome SIEM <span class="text-danger">*</span></label>
+            <input id="siemName" class="form-control" type="text" placeholder="Nome SIEM" [(ngModel)]="rule.externalName"
+                name="externalName" required #externalName="ngModel">
+            <small class="text-danger"
+                *ngIf="externalName.invalid && (externalName.dirty || externalName.touched) && externalName.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <app-custom-field-value *ngFor="let customfield of customFields" [customFieldType]="customfield.customFieldType"
+            [template]="customfield.template" [mandatory]="customfield.mandatory" [name]="customfield.name"
+            [mandatory]="customfield.mandatory" [(ngModel)]="customFieldValues[customfield.id].value"
+            required="{{customfield.mandatory}}"></app-custom-field-value>
+
+        <div class="row d-flex flex-row-reverse">
+            <button class="btn btn-custom m-1" (click)="save($event)" [disabled]="myForm.invalid" *ngIf="authorizationService.isUser()">Ok</button>
+            <button class="btn btn-custom m-1" (click)="goBack($event)">Voltar</button>
+        </div>
+    </div>
+</form>

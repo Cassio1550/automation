@@ -1,0 +1,35 @@
+<div class="row">
+    <div class="col-md-12 d-flex flex-row-reverse my-2">
+            <button class="btn btn-custom mx-1" [routerLink]="['/managedobject', 0]" *ngIf="authorizationService.isUser()">Novo</button>
+            <input class="form-control" type="text" placeholder="Filtro" name="searchTerm" [(ngModel)]="searchTerm">
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12 table-responsive">
+        <table class="table table-striped">
+            <caption>Managed Objects</caption>
+            <thead>
+                <tr class="d-flex">
+                    <th scope="col" class="col-1">#</th>
+                    <th scope="col" class="col-10">Nome</th>
+                    <th scope="col" class="col-1">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let managedObject of managedObjects | listFilter: searchTerm :['name']" class="d-flex">
+                    <th scope="row" class="col-1">{{managedObject.id}}</th>
+                    <td class="col-10">{{managedObject.name}}</td>
+                    <td class="col-1 p-2">
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Editar">
+                            <button class="btn btn-sm btn-custom mx-1" [routerLink]="['/managedobject', managedObject.id]"><i class="fas fa-edit"></i></button>
+                        </span>
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Apagar" *ngIf="authorizationService.isUser()">
+                            <button class="btn btn-sm btn-danger mx-1" (click)="delete(managedObject.id)"><i class="fas fa-trash"></i></button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

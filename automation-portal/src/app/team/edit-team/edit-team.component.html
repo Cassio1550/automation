@@ -1,0 +1,48 @@
+<form #myForm="ngForm" class="m-5">
+    <div class="container" *ngIf="team">
+        <div class="form-group">
+            <label class="small" for="id">Id</label>
+            <input class="form-control" id="id" type="text" readonly [(ngModel)]="team.id" name="id">
+        </div>
+        <div class="form-group">
+            <label for="name" class="small">Nome <span class="text-danger">*</span></label>
+            <input id="name" class="form-control" type="text" placeholder="Nome" [(ngModel)]="team.name" name="name"
+                required #name="ngModel">
+            <small class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched) && name.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label class="small" for="customer">Cliente <span class="text-danger">*</span></label>
+            <select class="form-control" id="customer" name="customer" [(ngModel)]="team.customerId" required
+                #customer="ngModel">
+                <option></option>
+                <option *ngFor="let c of customers" [ngValue]="c.id">{{c.name}}</option>
+            </select>
+            <small class="text-danger"
+                *ngIf="customer.invalid && (customer.dirty || customer.touched) && customer.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="small">Email</label>
+            <input id="email" class="form-control" type="text" placeholder="Email" [(ngModel)]="team.email" name="email"
+                required #email="ngModel">
+        </div>
+
+        <div class="form-check">
+            <input id="isDefault" type="checkbox" class="form-check-input" [(ngModel)]="team.isDefault" name="isDefault">
+            <label for="isDefault" class="form-check-label">Padrão</label>
+        </div>
+
+        <app-custom-field-value *ngFor="let customfield of customFields" [customFieldType]="customfield.customFieldType"
+            [template]="customfield.template" [mandatory]="customfield.mandatory" [name]="customfield.name"
+            [mandatory]="customfield.mandatory" [(ngModel)]="customFieldValues[customfield.id].value"
+            required="{{customfield.mandatory}}"></app-custom-field-value>
+
+        <div class="row d-flex flex-row-reverse">
+            <button class="btn btn-custom m-1" (click)="save($event)" [disabled]="myForm.invalid" *ngIf="authorizationService.isUser()">Ok</button>
+            <button class="btn btn-custom m-1" (click)="goBack($event)">Voltar</button>
+        </div>
+    </div>
+</form>

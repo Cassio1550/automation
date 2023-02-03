@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-md-12 d-flex flex-row-reverse my-2">
+            <button class="btn btn-custom mx-1" [routerLink]="['/site', 0]" [queryParams]="customerId > 0 ? {'customerId': customerId} : {}" *ngIf="authorizationService.isUser()">Novo</button>
+            <select class="form-control" id="deviceType" name="deviceType" [(ngModel)]="customerId" (change)="onChangeCustomer($event, customerId)" #customer>
+                <option></option>
+                <option *ngFor="let customer of customers" [ngValue]="customer.id">{{customer.name}}</option>
+            </select>
+    </div>
+</div>
+
+<div class="row" *ngIf="customerId>0">
+    <div class="col-md-12 table-responsive">
+        <table class="table table-striped">
+            <caption>Localidades</caption>
+            <thead>
+                <tr class="d-flex">
+                    <th scope="col" class="col-1">#</th>
+                    <th scope="col" class="col-10">Nome</th>
+                    <th scope="col" class="col-1">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let site of sites" class="d-flex">
+                    <th scope="row" class="col-1">{{site.id}}</th>
+                    <td class="col-10">{{site.name}}</td>
+                    <td class="col-1 p-2">
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Editar">
+                            <button class="btn btn-sm btn-custom mx-1" [routerLink]="['/site', site.id]" [queryParams]="customerId > 0 ? {'customerId': customerId} : {}"><i class="fas fa-edit"></i></button>
+                        </span>
+                        <span class="d-inline-block" tabindex="0" data-toggle="tooltip" title="Apagar" *ngIf="authorizationService.isUser()">
+                            <button class="btn btn-sm btn-danger mx-1" (click)="delete(site.id)"><i class="fas fa-trash"></i></button>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="row" *ngIf="customerId<=0">
+    <div class="col-md-12">
+        <div class="alert alert-warning">
+            Selecione um Cliente
+        </div>
+    </div>
+</div>

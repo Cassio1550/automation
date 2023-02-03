@@ -1,0 +1,82 @@
+<form #myForm="ngForm" class="m-5">
+    <div class="container" *ngIf="task">
+        <div class="form-group">
+            <label for="dashboard" class="small">Dashboard <span class="text-danger">*</span></label>
+            <input id="dashboard" class="form-control" type="text" placeholder="Dashboard" [(ngModel)]="task.dashboard"
+                name="dashboard" required #dashboard="ngModel">
+            <small class="text-danger"
+                *ngIf="dashboard.invalid && (dashboard.dirty || dashboard.touched) && dashboard.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label for="from" class="small">De <span class="text-danger">*</span></label>
+            <input id="from" class="form-control" type="text" placeholder="De" [(ngModel)]="task.from" name="from"
+                required #from="ngModel">
+            <small class="text-danger" *ngIf="from.invalid && (from.dirty || from.touched) && from.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label for="to" class="small">Até <span class="text-danger">*</span></label>
+            <input id="to" class="form-control" type="text" placeholder="Até" [(ngModel)]="task.to" name="to" required
+                #to="ngModel">
+            <small class="text-danger" *ngIf="to.invalid && (to.dirty || to.touched) && to.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label class="small" for="theme">Tema <span class="text-danger">*</span></label>
+            <select class="form-control" id="theme" name="theme" [(ngModel)]="task.theme" required #theme="ngModel">
+                <option value="light">Claro</option>
+                <option value="dark">Escuro</option>
+            </select>
+            <small class="text-danger" *ngIf="theme.invalid && (theme.dirty || theme.touched) && theme.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label for="email" class="small">Email <span class="text-danger">*</span></label>
+            <input id="email" class="form-control" type="text" placeholder="Email" [(ngModel)]="task.email" name="email"
+                required #email="ngModel">
+            <small class="text-danger" *ngIf="email.invalid && (email.dirty || email.touched) && email.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label for="subject" class="small">Assunto</label>
+            <input id="subject" class="form-control" type="text" placeholder="Assunto" [(ngModel)]="task.subject"
+                name="subject" #subject="ngModel">
+        </div>
+
+        <div class="form-group">
+            <label for="body" class="small">Mensagem</label>
+            <textarea id="body" class="form-control" type="text" placeholder="Mensagem" [(ngModel)]="task.body"
+                name="body" #body="ngModel"></textarea>
+        </div>
+
+        <div class="form-group" *ngFor="let extrafield of extrafields">
+            <label for="{{extrafield}}" class="small">{{extrafield}}</label>
+            <div class="input-group">
+                <input id="{{extrafield}}" class="form-control" type="text" placeholder="{{extrafield}}"
+                    [(ngModel)]="task[extrafield]" name="{{extrafield}}" #{{extrafield}}="ngModel">
+                <div class="input-group-append">
+                    <button class="btn btn-custom" type="button" (click)="removeField($event, extrafield)">Remove</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input id="newfield" type="text" class="form-control" placeholder="Novo campo" [(ngModel)]="newfield"
+                name="newfield">
+            <div class="input-group-append">
+                <button class="btn btn-custom" type="button" (click)="addField($event)">Add</button>
+            </div>
+        </div>
+
+        <div class="row d-flex flex-row-reverse">
+            <button class="btn btn-custom m-1" (click)="run($event)" [disabled]="myForm.invalid"
+                *ngIf="authorizationService.isUser()">Ok</button>
+        </div>
+    </div>
+</form>

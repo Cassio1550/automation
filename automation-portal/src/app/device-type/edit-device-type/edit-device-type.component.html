@@ -1,0 +1,49 @@
+<form #myForm="ngForm" class="m-5">
+    <div class="container" *ngIf="deviceType">
+        <div class="form-group">
+            <label class="small" for="id">Id</label>
+            <input class="form-control" id="id" type="text" readonly [(ngModel)]="deviceType.id" name="id">
+        </div>
+        <div class="form-group">
+            <label for="name" class="small">Nome <span class="text-danger">*</span></label>
+            <input id="name" class="form-control" type="text" placeholder="Nome" [(ngModel)]="deviceType.name" name="name"
+                required #name="ngModel">
+            <small class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched) && name.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label for="mnemonic" class="small">Nome Curto <span class="text-danger">*</span></label>
+            <input id="mnemonic" class="form-control" type="text" placeholder="Nome Curto" [(ngModel)]="deviceType.mnemonic"
+                name="mnemonic" required #mnemonic="ngModel">
+            <small class="text-danger"
+                *ngIf="mnemonic.invalid && (mnemonic.dirty || mnemonic.touched) && mnemonic.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label class="small" for="customer">Tipo de Conexão <span class="text-danger">*</span></label>
+            <select class="form-control" id="interfaceType" name="interfaceType" [(ngModel)]="deviceType.interfaceType" required
+                #customer="ngModel">
+                <option></option>
+                <option value="SNMPv2c">SNMPv2c</option>
+                <option value="SNMPv3">SNMPv3</option>
+            </select>
+            <small class="text-danger"
+                *ngIf="customer.invalid && (customer.dirty || customer.touched) && customer.errors">Campo
+                obrigatório</small>
+        </div>
+        <div class="form-group">
+            <label for="templates" class="small">Templates <span class="text-danger">*</span></label>
+            <textarea id="templates" class="form-control" type="text" placeholder="Templates" [(ngModel)]="deviceType.templates"
+                name="templates" required #templates="ngModel" rows="3"></textarea>
+            <small class="text-danger"
+                *ngIf="templates.invalid && (templates.dirty || templates.touched) && templates.errors">Campo
+                obrigatório</small>
+        </div>
+        <div class="row d-flex flex-row-reverse">
+            <button class="btn btn-custom m-1" (click)="save($event)" [disabled]="myForm.invalid">Ok</button>
+            <button class="btn btn-custom m-1" (click)="goBack($event)">Voltar</button>
+        </div>
+    </div>
+</form>

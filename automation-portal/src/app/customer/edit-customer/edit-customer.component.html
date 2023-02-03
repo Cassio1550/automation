@@ -1,0 +1,39 @@
+<form #myForm="ngForm" class="m-5">
+    <div class="container" *ngIf="customer">
+        <div class="form-group">
+            <label class="small" for="id">Id</label>
+            <input class="form-control" id="id" type="text" readonly [(ngModel)]="customer.id" name="id">
+        </div>
+        <div class="form-group">
+            <label for="name" class="small">Nome <span class="text-danger">*</span></label>
+            <input id="name" class="form-control" type="text" placeholder="Nome" [(ngModel)]="customer.name" name="name"
+                required #name="ngModel">
+            <small class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched) && name.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-group">
+            <label for="mnemonic" class="small">Nome Curto <span class="text-danger">*</span></label>
+            <input id="mnemonic" class="form-control" type="text" placeholder="Nome Curto" [(ngModel)]="customer.mnemonic"
+                name="mnemonic" required #mnemonic="ngModel">
+            <small class="text-danger"
+                *ngIf="mnemonic.invalid && (mnemonic.dirty || mnemonic.touched) && mnemonic.errors">Campo
+                obrigatório</small>
+        </div>
+
+        <div class="form-check">
+            <input id="enabled" type="checkbox" class="form-check-input" [(ngModel)]="customer.enabled" name="enabled">
+            <label for="enabled" class="form-check-label">Habilitado</label>
+        </div>
+
+        <app-custom-field-value *ngFor="let customfield of customFields" [customFieldType]="customfield.customFieldType"
+            [template]="customfield.template" [mandatory]="customfield.mandatory" [name]="customfield.name"
+            [mandatory]="customfield.mandatory" [(ngModel)]="customFieldValues[customfield.id].value"
+            required="{{customfield.mandatory}}"></app-custom-field-value>
+
+        <div class="row d-flex flex-row-reverse">
+            <button class="btn btn-custom m-1" (click)="save($event)" [disabled]="myForm.invalid" *ngIf="authorizationService.isUser()">Ok</button>
+            <button class="btn btn-custom m-1" (click)="goBack($event)">Voltar</button>
+        </div>
+    </div>
+</form>

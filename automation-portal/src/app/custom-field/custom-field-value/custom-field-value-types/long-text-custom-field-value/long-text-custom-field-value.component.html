@@ -1,0 +1,5 @@
+<div class="form-group">
+    <label class="small" for="{{name}}">{{name}} <span *ngIf="isRequired()" class="text-danger">*</span></label>
+    <textarea class="form-control" id="{{name}}" type="text" placeholder="{{name}}" [(ngModel)]="value" name="value" #model="ngModel" (change)="valueChanged()" required="{{required}}" rows=5></textarea>
+    <small class="text-danger" *ngIf="model.invalid && (model.dirty || model.touched) && model.errors">Campo obrigatório</small>
+</div>

@@ -1,0 +1,70 @@
+<form #myForm="ngForm" class="m-5">
+    <div class="container">
+        <div class="form-group">
+            <label class="small" for="id">Id</label>
+            <input class="form-control" id="id" type="text" readonly [(ngModel)]="customfield.id" name="id">
+        </div>
+
+        <div class="form-group">
+            <label class="small" for="name">Nome <span class="text-danger">*</span></label>
+            <input class="form-control" id="name" type="text" placeholder="Nome" [(ngModel)]="customfield.name"
+                name="name" required #name="ngModel">
+            <small class="text-danger" *ngIf="name.invalid && (name.dirty || name.touched) && name.errors">Campo
+                obrigatório</small>
+        </div>
+        <div class="form-group">
+            <label class="small" for="entity">Entidade <span class="text-danger">*</span></label>
+            <select class="form-control" id="entity" name="entity" [(ngModel)]="customfield.entity" required
+                #entity="ngModel">
+                <option></option>
+                <option value="customer">Cliente</option>
+                <option value="device">Dispositivo</option>
+                <option value="team">Equipe</option>
+                <option value="site">Localidade</option>
+                <option value="rule">Regra</option>
+            </select>
+            <small class="text-danger" *ngIf="entity.invalid && (entity.dirty || entity.touched) && entity.errors">Campo
+                obrigatório</small>
+        </div>
+        <div class="form-group">
+            <label class="small" for="sortOrder">Ordem <span class="text-danger">*</span></label>
+            <input class="form-control" id="sortOrder" type="number"  [(ngModel)]="customfield.sortOrder"
+                name="sortOrder" required #sortOrder="ngModel">
+            <small class="text-danger" *ngIf="sortOrder.invalid && (sortOrder.dirty || sortOrder.touched) && sortOrder.errors">Campo
+                obrigatório</small>
+        </div>
+        <div class="form-group">
+            <label class="small" for="type">Tipo <span class="text-danger">*</span></label>
+            <select class="form-control" id="type" name="type" [(ngModel)]="customfield.customFieldType" required
+                #type="ngModel">
+                <option></option>
+                <option value="simple-text">Texto</option>
+                <option value="long-text">Texto Grande</option>
+                <!-- <option value="boolean">Verdadeiro/Falso</option> -->
+                <!-- <option value="simple-select">Caixa de Seleção</option> -->
+            </select>
+            <small class="text-danger" *ngIf="type.invalid && (type.dirty || type.touched) && type.errors">Campo
+                obrigatório</small>
+        </div>
+        <app-simple-select-custom-field *ngIf="customfield.customFieldType=='simple-select'"
+            [customfield]="customfield"></app-simple-select-custom-field>
+
+        <div class="form-check">
+            <input id="mandatory" type="checkbox" class="form-check-input" [(ngModel)]="customfield.mandatory"
+                name="mandatory">
+            <label for="mandatory" class="form-check-label">Mandatório</label>
+        </div>
+        <div class="form-check" *ngIf="customfield.customFieldType">
+            <input id="hasDefaultValue" type="checkbox" class="form-check-input" [(ngModel)]="hasDefaultValue"
+                name="hasDefaultValue">
+            <label for="hasDefaultValue" class="form-check-label">Valor Padrão</label>
+        </div>
+        <app-custom-field-value *ngIf="hasDefaultValue && customfield.customFieldType && customfield.name"
+            [customFieldType]="customfield.customFieldType" [template]="customfield.template"
+            [(ngModel)]="customfield.defaultValue" [name]="customfield.name"></app-custom-field-value>
+        <div class="row d-flex flex-row-reverse">
+            <button class="btn btn-custom m-1" (click)="save($event)" [disabled]="myForm.invalid">Ok</button>
+            <button class="btn btn-custom m-1" (click)="goBack($event)">Voltar</button>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,78 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-custom ">
+    <a class="navbar-brand" routerLink="/">Automation Portal</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/rule" routerLinkActive="active">Regras</a>
+            </li>
+            <li class="nav-item">
+                <div class="btn-group">
+                    <a class="nav-link" routerLink="/customer" [ngClass]="{'active': customerActive.isActive ||teamActive.isActive || siteActive.isActive}">Clientes</a>
+                    <button type="button" class="btn btn-custom dropdown-toggle dropdown-toggle-split"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <input type="hidden" routerLink="/customer" routerLinkActive="active" #customerActive="routerLinkActive">
+                        <a class="dropdown-item" routerLink="/team" routerLinkActive="active" #teamActive="routerLinkActive">Equipes</a>
+                        <a class="dropdown-item" routerLink="/site" routerLinkActive="active" #siteActive="routerLinkActive">Localidades</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <div class="btn-group">
+                    <a class="nav-link" routerLink="/device" [ngClass]="{'active': deviceActive.isActive ||managedobjectActive.isActive }">Dispositivos</a>
+                    <button type="button" class="btn btn-custom dropdown-toggle dropdown-toggle-split"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <input type="hidden" routerLink="/device" routerLinkActive="active" #deviceActive="routerLinkActive">
+                        <a class="dropdown-item" routerLink="/managedobject" routerLinkActive="active" #managedobjectActive="routerLinkActive">Managed Objects</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" routerLink="/manual-report" routerLinkActive="active">Retatórios</a>
+            </li>
+            <li class="nav-item dropdown" *ngIf="authorizationService.isAdmin()">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="false"
+                    [ngClass]="{'active': customfieldActive.isActive || devicetypeActive.isActive}">
+                    Administração
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <a class="dropdown-item" routerLink="/customfield" routerLinkActive="active"
+                        #customfieldActive="routerLinkActive">Campos Customizados</a>
+                    <a class="dropdown-item" routerLink="/devicetype" routerLinkActive="active"
+                        #devicetypeActive="routerLinkActive">Tipos de Dispositivo</a>
+                </div>
+            </li>
+        </ul>
+        <div class="dropdown" *ngIf="loggedIn">
+            <a class="btn btn-custom dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
+                {{username}}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <button class="dropdown-item" (click)="logout()">Sair</button>
+            </div>
+        </div>
+        <div class="dropdown" *ngIf="!loggedIn">
+            <button class="btn btn-custom " *ngIf="!loggedIn" (click)="login()">Entrar</button>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <router-outlet></router-outlet>
+</div>
+
+<app-loading></app-loading>
+<app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
+<app-confirm></app-confirm>
